@@ -65,11 +65,11 @@ class ViewController: UIViewController {
         quarterLabel.text = String(quarter)
         
         //Sets default stats for players
-        for i in 0...roster1.count - 1{
+        for i in 0...roster1.count - 1{ //Adds each player to the game
             team1[roster1[i]] = [:]
             team2[roster2[i]] = [:]
             
-            for x in 1...4{
+            for x in 1...4{ //Used to create stats per quarter
                 team1[roster1[i]]![x] = ["Points":0, "Assists":0, "Rebounds":0, "Steals": 0, "Turnovers": 0, "FGM": 0, "FGA": 0, "3PM": 0, "3PA": 0, "FTM": 0, "FTA": 0]
                 
                 team2[roster2[i]]![x] = ["Points":0, "Assists":0, "Rebounds":0, "Steals": 0, "Turnovers": 0, "FGM": 0, "FGA": 0, "3PM": 0, "3PA": 0, "FTM": 0, "FTA": 0]
