@@ -49,6 +49,11 @@ class ViewController: UIViewController {
     
     var miss = false
     
+    var turnover = true;
+    
+    var steal = false;
+    
+    @IBOutlet weak var turnoverButton: UIButton!
     
     override func viewDidLoad() {//Function runs when app first runs
         super.viewDidLoad()
@@ -100,13 +105,15 @@ class ViewController: UIViewController {
                 self.seconds = seconds - 1
             }
             
-            if (seconds <= 10) { //Formatting for the seconds label
+            if (seconds <= 9) { //Formatting for the seconds label
                 self.secondsLabel.text = "0" + String(seconds)
             }
             
             
             if (self.timesPressed % 2 == 0) { //If the timesPressed is divisable by 2 then timer is paused
                 timer.invalidate()
+                turnoverButton.setTitle("TO", for: .normal)
+                turnover = true
             }
             
             if (minutes == 0 && seconds == 0){ //Resets time and starts new quarter
@@ -124,7 +131,10 @@ class ViewController: UIViewController {
             
                 quarterLabel.text = String(quarter)
                 
+                
             }
+            turnoverButton.setTitle("TO", for: .normal)
+            turnover = true
         }
 }
     
@@ -138,6 +148,7 @@ class ViewController: UIViewController {
                 team1[playerChosen]![quarter]!["FGA"]! = team1[playerChosen]![quarter]!["FGA"]! + 1
                 team1[playerChosen]![quarter]!["3PM"]! = team1[playerChosen]![quarter]!["3PM"]! + 1
                 team1[playerChosen]![quarter]!["3PA"]! = team1[playerChosen]![quarter]!["3PA"]! + 1
+                print(team1[playerChosen]![quarter]!)
                
             } else {
                 score2 = score2 + 3
@@ -146,7 +157,7 @@ class ViewController: UIViewController {
                 team2[playerChosen]![quarter]!["FGA"]! = team2[playerChosen]![quarter]!["FGA"]! + 1
                 team2[playerChosen]![quarter]!["3PM"]! = team2[playerChosen]![quarter]!["3PM"]! + 1
                 team2[playerChosen]![quarter]!["3PA"]! = team2[playerChosen]![quarter]!["3PA"]! + 1
-                
+                print(team2[playerChosen]![quarter]!)
             }
             updateScore()
             lastPoints = 3
@@ -158,7 +169,6 @@ class ViewController: UIViewController {
             miss = false
         }
         
-
     }
     
     @IBAction func add2(_ sender: Any) {
@@ -168,13 +178,13 @@ class ViewController: UIViewController {
                 team1[playerChosen]![quarter]!["Points"]! = team1[playerChosen]![quarter]!["Points"]! + 2
                 team1[playerChosen]![quarter]!["FGM"]! = team1[playerChosen]![quarter]!["FGM"]! + 1
                 team1[playerChosen]![quarter]!["FGA"]! = team1[playerChosen]![quarter]!["FGA"]! + 1
-
+                print(team1[playerChosen]![quarter]!)
             } else {
                 score2 = score2 + 2
                 team2[playerChosen]![quarter]!["Points"]! = team2[playerChosen]![quarter]!["Points"]! + 2
                 team2[playerChosen]![quarter]!["FGM"]! = team2[playerChosen]![quarter]!["FGM"]! + 1
                 team2[playerChosen]![quarter]!["FGA"]! = team2[playerChosen]![quarter]!["FGA"]! + 1
-   
+                print(team2[playerChosen]![quarter]!)
                 
             }
             updateScore()
@@ -196,13 +206,13 @@ class ViewController: UIViewController {
                 team1[playerChosen]![quarter]!["Points"]! = team1[playerChosen]![quarter]!["Points"]! + 1
                 team1[playerChosen]![quarter]!["FTM"]! = team1[playerChosen]![quarter]!["FTM"]! + 1
                 team1[playerChosen]![quarter]!["FTA"]! = team1[playerChosen]![quarter]!["FTA"]! + 1
-
+                print(team1[playerChosen]![quarter]!)
             } else {
                 score2 = score2 + 1
                 team2[playerChosen]![quarter]!["Points"]! = team2[playerChosen]![quarter]!["Points"]! + 1
                 team2[playerChosen]![quarter]!["FTM"]! = team2[playerChosen]![quarter]!["FTM"]! + 1
                 team2[playerChosen]![quarter]!["FTA"]! = team2[playerChosen]![quarter]!["FTA"]! + 1
-                
+                print(team2[playerChosen]![quarter]!)
             }
             updateScore()
             lastPoints = 1
@@ -229,7 +239,7 @@ class ViewController: UIViewController {
             } else if(lastShot == "1p"){
                 team1[playerChosen]![quarter]!["FTA"]! = team1[playerChosen]![quarter]!["FTA"]! + 1
             }
-
+            print(team1[playerChosen]![quarter]!)
         } else {
             if(lastShot == "3p"){
                 team2[playerChosen]![quarter]!["FGA"]! = team2[playerChosen]![quarter]!["FGA"]! + 1
@@ -239,7 +249,7 @@ class ViewController: UIViewController {
             } else if(lastShot == "1p"){
                 team2[playerChosen]![quarter]!["FTA"]! = team2[playerChosen]![quarter]!["FTA"]! + 1
             }
-
+            print(team2[playerChosen]![quarter]!)
         }
     }
     
@@ -308,14 +318,52 @@ class ViewController: UIViewController {
     @IBAction func getRebounds(_ sender: Any) {
         if(teamChosen == "team1"){
             team1[playerChosen]![quarter]!["Rebounds"]! = team1[playerChosen]![quarter]!["Rebounds"]! + 1
-         
+            print(team1[playerChosen]![quarter]!)
         } else {
             team2[playerChosen]![quarter]!["Rebounds"]! = team2[playerChosen]![quarter]!["Rebounds"]! + 1
-            
+            print(team2[playerChosen]![quarter]!)
         }
     }
     
-    //Stats Seque
+    @IBAction func addAssist(_ sender: Any) {
+        if(teamChosen == "team1"){
+            team1[playerChosen]![quarter]!["Assists"]! = team1[playerChosen]![quarter]!["Assists"]! + 1
+            print(team1[playerChosen]![quarter]!)
+        } else {
+            team2[playerChosen]![quarter]!["Assists"]! = team2[playerChosen]![quarter]!["Assists"]! + 1
+            print(team2[playerChosen]![quarter]!)
+        }
+    }
+    
+    @IBAction func addTurnover(_ sender: Any) {
+        if (turnover) {
+            if(teamChosen == "team1"){
+                team1[playerChosen]![quarter]!["Turnovers"]! = team1[playerChosen]![quarter]!["Turnovers"]! + 1
+                turnoverButton.setTitle("STL", for: .normal)
+                print(team1[playerChosen]![quarter]!)
+            } else {
+                team2[playerChosen]![quarter]!["Turnovers"]! = team2[playerChosen]![quarter]!["Turnovers"]! + 1
+                turnoverButton.setTitle("STL", for: .normal)
+                print(team2[playerChosen]![quarter]!)
+            }
+            turnover = false;
+            
+        }
+        else {
+            if(teamChosen == "team1"){
+                team1[playerChosen]![quarter]!["Steals"]! = team1[playerChosen]![quarter]!["Steals"]! + 1
+                turnoverButton.setTitle("TO", for: .normal)
+                print(team1[playerChosen]![quarter]!)
+            } else {
+                team2[playerChosen]![quarter]!["Steals"]! = team2[playerChosen]![quarter]!["Steals"]! + 1
+                turnoverButton.setTitle("TO", for: .normal)
+                print(team2[playerChosen]![quarter]!)
+            }
+            turnover = true;
+        }
+        }
+    
+    //Stats Segue
     @IBAction func goToStats(_ sender: Any) {
         performSegue(withIdentifier: "statSegue", sender: (Any).self)
     }
