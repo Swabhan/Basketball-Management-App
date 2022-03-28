@@ -18,14 +18,15 @@ class ViewController: UIViewController {
     var lastPoints = 0
     
     var lastShot = ""
+    var lastTeamScored = ""
     
     //-Timer Variables
     @IBOutlet weak var minutesLabel: UILabel!
     @IBOutlet weak var secondsLabel: UILabel!
     
-    var startingMinutes = 12
+    var startingMinutes = 1
     
-    var minutes = 12
+    var minutes = 1
     var seconds = 00
     
     var timesPressed = 0 //Keeps track of the amount of times timer has been paused/resumed
@@ -47,9 +48,9 @@ class ViewController: UIViewController {
     
     var playerChosen = ""
     
-    var miss = false
-    
-    var turnover = true;
+    var miss = false //If a player misses and the next player chosen gets a rebound
+    var turnover = false //If turnover is true the next player chosen gets the steal if they are on the other team
+    var assist = false //If a player scores and the next player chosen is on the same team an assist gets added
     
     @IBOutlet weak var lastStatText: UILabel!
     
@@ -90,7 +91,7 @@ class ViewController: UIViewController {
     //-Time Buttons
     @IBAction func time(_ sender: Any) {
         timesPressed = timesPressed + 1
-        turnover = true
+        turnover = false
         miss = false
         reminderText.text = ""
         _ = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [self] timer in
@@ -117,7 +118,8 @@ class ViewController: UIViewController {
             
             if (self.timesPressed % 2 == 0) { //If the timesPressed is divisable by 2 then timer is paused
                 timer.invalidate()
-                turnover = true
+                turnover = false
+                assist = false
                 reminderText.text = ""
             }
             
@@ -166,6 +168,9 @@ class ViewController: UIViewController {
             lastPoints = 3
             lastShot = "3p"
             lastStatText.text = playerChosen + " made a 3!"
+            reminderText.text = "Assist?"
+            assist = true
+            lastTeamScored = teamChosen
         } else {
             lastPoints = 3
             lastShot = "3p"
@@ -194,6 +199,9 @@ class ViewController: UIViewController {
             lastPoints = 2
             lastShot = "2p"
             lastStatText.text = playerChosen + " made a 2!"
+            reminderText.text = "Assist?"
+            assist = true
+            lastTeamScored = teamChosen
         } else {
             lastPoints = 2
             lastShot = "2p"
@@ -228,6 +236,28 @@ class ViewController: UIViewController {
             missedShot()
             miss = false
         }
+    }
+    
+    func rebounds(){
+        addAssistReboundStealTurnover(Stat : "Rebounds")
+        lastStatText.text = playerChosen + " got a rebound!"
+    }
+    
+    func steals(){
+        addAssistReboundStealTurnover(Stat : "Steals")
+        lastStatText.text = playerChosen + " got a steal!"
+    }
+    
+    @IBAction func addAssist(_ sender: Any) {
+        addAssistReboundStealTurnover(Stat : "Assists")
+        lastStatText.text = playerChosen + " got a assist!"
+    }
+    
+    @IBAction func addTurnover(_ sender: Any) {
+        addAssistReboundStealTurnover(Stat : "Turnovers")
+        turnover = true
+        lastStatText.text = playerChosen + " got a turnover"
+        reminderText.text = "Who got a steal?"
     }
     
     @IBAction func missButton(_ sender: Any) {
@@ -266,6 +296,7 @@ class ViewController: UIViewController {
         
     }
     
+    //Subtracts team score if the score button has been pressed
     @IBAction func subtractTeam1(_ sender: Any) {
         score1 = score1 - lastPoints
         if(lastShot == "3p"){
@@ -322,6 +353,7 @@ class ViewController: UIViewController {
         }
         lastStatText.text = playerChosen
         
+        //Rebound
         if(miss == true){
             if(sender.tag <= 5){
                 teamChosen = "team1"
@@ -336,7 +368,25 @@ class ViewController: UIViewController {
             reminderText.text = ""
         }
         
-        if(turnover == false){
+        //Assist
+        if(assist == true){
+            if(teamChosen == lastTeamScored){
+                if(sender.tag <= 5){
+                    teamChosen = "team1"
+                    playerChosen = roster1[sender.tag - 1]
+                } else {
+                    teamChosen = "team2"
+                    playerChosen = roster2[sender.tag - 6]
+                }
+                lastStatText.text = playerChosen
+                addAssist(playerChosen)
+                assist = false
+            }
+            reminderText.text = ""
+        }
+        
+        //Steal
+        if(turnover){
             if(sender.tag <= 5){
                 teamChosen = "team1"
                 playerChosen = roster1[sender.tag - 1]
@@ -346,78 +396,25 @@ class ViewController: UIViewController {
             }
             lastStatText.text = playerChosen
             steals()
-            turnover = true
+            turnover = false
             reminderText.text = ""
         }
     }
     
+    //Changes score text
     func updateScore(){
         score1Text.setTitle(String(score1), for: .normal)
         score2Text.setTitle(String(score2), for: .normal)
     }
     
-    
-    func rebounds(){
+    //Clean code functions
+    func addAssistReboundStealTurnover(Stat : String){
         if(teamChosen == "team1"){
-            team1[playerChosen]![quarter]!["Rebounds"]! = team1[playerChosen]![quarter]!["Rebounds"]! + 1
-            print(team1[playerChosen]![quarter]!)
+            team1[playerChosen]![quarter]![Stat]! = team1[playerChosen]![quarter]![Stat]! + 1
         } else {
-            team2[playerChosen]![quarter]!["Rebounds"]! = team2[playerChosen]![quarter]!["Rebounds"]! + 1
-            print(team2[playerChosen]![quarter]!)
+            team2[playerChosen]![quarter]![Stat]! = team2[playerChosen]![quarter]![Stat]! + 1
         }
-        lastStatText.text = playerChosen + " got a rebound!"
     }
-    
-    func steals(){
-        if(teamChosen == "team1"){
-            team1[playerChosen]![quarter]!["Steals"]! = team1[playerChosen]![quarter]!["Steals"]! + 1
-            print(team1[playerChosen]![quarter]!)
-        } else {
-            team2[playerChosen]![quarter]!["Steals"]! = team2[playerChosen]![quarter]!["Steals"]! + 1
-            print(team2[playerChosen]![quarter]!)
-        }
-        lastStatText.text = playerChosen + " got a steal!"
-    }
-    
-    @IBAction func addAssist(_ sender: Any) {
-        if(teamChosen == "team1"){
-            team1[playerChosen]![quarter]!["Assists"]! = team1[playerChosen]![quarter]!["Assists"]! + 1
-            print(team1[playerChosen]![quarter]!)
-        } else {
-            team2[playerChosen]![quarter]!["Assists"]! = team2[playerChosen]![quarter]!["Assists"]! + 1
-            print(team2[playerChosen]![quarter]!)
-        }
-        lastStatText.text = playerChosen + " got a assist!"
-    }
-    
-    @IBAction func addTurnover(_ sender: Any) {
-        if (turnover) {
-            if(teamChosen == "team1"){
-                team1[playerChosen]![quarter]!["Turnovers"]! = team1[playerChosen]![quarter]!["Turnovers"]! + 1
-                print(team1[playerChosen]![quarter]!)
-            } else {
-                team2[playerChosen]![quarter]!["Turnovers"]! = team2[playerChosen]![quarter]!["Turnovers"]! + 1
-                print(team2[playerChosen]![quarter]!)
-            }
-            turnover = false
-            lastStatText.text = playerChosen + " got a turnover"
-            reminderText.text = "Who got a steal?"
-            
-        }
-        else {
-            if(teamChosen == "team1"){
-                team1[playerChosen]![quarter]!["Steals"]! = team1[playerChosen]![quarter]!["Steals"]! + 1
-                turnoverButton.setTitle("TO", for: .normal)
-                print(team1[playerChosen]![quarter]!)
-            } else {
-                team2[playerChosen]![quarter]!["Steals"]! = team2[playerChosen]![quarter]!["Steals"]! + 1
-                turnoverButton.setTitle("TO", for: .normal)
-                print(team2[playerChosen]![quarter]!)
-            }
-            turnover = false
-            lastStatText.text = playerChosen + " got a steal!"
-        }
-}
     
     //Stats Segue
     @IBAction func goToStats(_ sender: Any) {
@@ -433,6 +430,7 @@ class ViewController: UIViewController {
             
             destinationVC.minutes = minutes
             destinationVC.seconds = seconds
+            destinationVC.quarter = quarter
             
             destinationVC.team1 = team1
             destinationVC.team2 = team2
