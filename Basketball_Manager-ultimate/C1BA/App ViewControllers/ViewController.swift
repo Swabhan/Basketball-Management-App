@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 
 class ViewController: UIViewController, rostersRecieve{
+    
     //-Score Variables
     @IBOutlet weak var score1Text: UIButton!
     @IBOutlet weak var score2Text: UIButton!
@@ -78,7 +79,7 @@ class ViewController: UIViewController, rostersRecieve{
     @IBOutlet weak var playerButton8: UIButton!
     @IBOutlet weak var playerButton9: UIButton!
     @IBOutlet weak var playerButton10: UIButton!
-
+    
     override func viewDidLoad() {//Function runs when app first runs
         super.viewDidLoad()
         allPlayers = roster1 + roster2
@@ -180,7 +181,6 @@ class ViewController: UIViewController, rostersRecieve{
     
     //-Score Buttons
     @IBAction func add3(_ sender: Any) {
-        ref.child("c1ba").child("7").setValue(3)
         if(miss == false){
             if(teamChosen == "team1"){
                 score1 = score1 + 3
@@ -200,6 +200,13 @@ class ViewController: UIViewController, rostersRecieve{
                 team2[playerChosen]![quarter]!["3PA"]! = team2[playerChosen]![quarter]!["3PA"]! + 1
                 print(team2[playerChosen]![quarter]!)
             }
+            
+            addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "Points", currentTeam: teamChosen, currentQuarter: quarter)
+            addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "FGM", currentTeam: teamChosen, currentQuarter: quarter)
+            addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "FGA", currentTeam: teamChosen, currentQuarter: quarter)
+            addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "3PM", currentTeam: teamChosen, currentQuarter: quarter)
+            addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "3PA", currentTeam: teamChosen, currentQuarter: quarter)
+            
             updateScore()
             lastPoints = 3
             lastShot = "3p"
@@ -231,6 +238,11 @@ class ViewController: UIViewController, rostersRecieve{
                 print(team2[playerChosen]![quarter]!)
                 
             }
+            
+            addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "Points", currentTeam: teamChosen, currentQuarter: quarter)
+            addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "FGM", currentTeam: teamChosen, currentQuarter: quarter)
+            addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "FGA", currentTeam: teamChosen, currentQuarter: quarter)
+            
             updateScore()
             lastPoints = 2
             lastShot = "2p"
@@ -245,7 +257,6 @@ class ViewController: UIViewController, rostersRecieve{
 
         }
     }
-    
     
     @IBAction func add1(_ sender: Any) {
         if(miss == false){
@@ -262,6 +273,11 @@ class ViewController: UIViewController, rostersRecieve{
                 team2[playerChosen]![quarter]!["FTA"]! = team2[playerChosen]![quarter]!["FTA"]! + 1
                 print(team2[playerChosen]![quarter]!)
             }
+            
+            addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "Points", currentTeam: teamChosen, currentQuarter: quarter)
+            addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "FTM", currentTeam: teamChosen, currentQuarter: quarter)
+            addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "FTA", currentTeam: teamChosen, currentQuarter: quarter)
+            
             updateScore()
             lastPoints = 1
             lastShot = "1p"
@@ -276,21 +292,25 @@ class ViewController: UIViewController, rostersRecieve{
     
     func rebounds(){
         addAssistReboundStealTurnover(Stat : "Rebounds")
+        addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "Rebounds", currentTeam: teamChosen, currentQuarter: quarter)
         lastStatText.text = playerChosen + " got a rebound!"
     }
     
     func steals(){
         addAssistReboundStealTurnover(Stat : "Steals")
+        addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "Steal", currentTeam: teamChosen, currentQuarter: quarter)
         lastStatText.text = playerChosen + " got a steal!"
     }
     
     @IBAction func addAssist(_ sender: Any) {
         addAssistReboundStealTurnover(Stat : "Assists")
+        addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "Assists", currentTeam: teamChosen, currentQuarter: quarter)
         lastStatText.text = playerChosen + " got a assist!"
     }
     
     @IBAction func addTurnover(_ sender: Any) {
         addAssistReboundStealTurnover(Stat : "Turnovers")
+        addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "Turnover", currentTeam: teamChosen, currentQuarter: quarter)
         turnover = true
         lastStatText.text = playerChosen + " got a turnover"
         reminderText.text = "Who got a steal?"
@@ -305,12 +325,22 @@ class ViewController: UIViewController, rostersRecieve{
             if(lastShot == "3p"){
                 team1[playerChosen]![quarter]!["FGA"]! = team1[playerChosen]![quarter]!["FGA"]! + 1
                 team1[playerChosen]![quarter]!["3PA"]! = team1[playerChosen]![quarter]!["3PA"]! + 1
+                
+                addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "FGA", currentTeam: teamChosen, currentQuarter: quarter)
+                addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "3PA", currentTeam: teamChosen, currentQuarter: quarter)
+                
                 lastStatText.text = playerChosen + " missed a 3"
             } else if(lastShot == "2p"){
                 team1[playerChosen]![quarter]!["FGA"]! = team1[playerChosen]![quarter]!["FGA"]! + 1
+                
+                addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "FGA", currentTeam: teamChosen, currentQuarter: quarter)
+                
                 lastStatText.text = playerChosen + " missed a 2"
             } else if(lastShot == "1p"){
                 team1[playerChosen]![quarter]!["FTA"]! = team1[playerChosen]![quarter]!["FTA"]! + 1
+                
+                addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "FTA", currentTeam: teamChosen, currentQuarter: quarter)
+                
                 lastStatText.text = playerChosen + " missed a free throw"
             }
             print(team1[playerChosen]![quarter]!)
@@ -318,12 +348,22 @@ class ViewController: UIViewController, rostersRecieve{
             if(lastShot == "3p"){
                 team2[playerChosen]![quarter]!["FGA"]! = team2[playerChosen]![quarter]!["FGA"]! + 1
                 team2[playerChosen]![quarter]!["3PA"]! = team2[playerChosen]![quarter]!["3PA"]! + 1
+                
+                addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "FGA", currentTeam: teamChosen, currentQuarter: quarter)
+                addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "3PA", currentTeam: teamChosen, currentQuarter: quarter)
+                
                 lastStatText.text = playerChosen + " missed a 3"
             } else if(lastShot == "2p"){
                 team2[playerChosen]![quarter]!["FGA"]! = team2[playerChosen]![quarter]!["FGA"]! + 1
+                
+                addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "FGA", currentTeam: teamChosen, currentQuarter: quarter)
+                
                 lastStatText.text = playerChosen + " missed a 2"
             } else if(lastShot == "1p"){
                 team2[playerChosen]![quarter]!["FTA"]! = team2[playerChosen]![quarter]!["FTA"]! + 1
+                
+                addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "FTA", currentTeam: teamChosen, currentQuarter: quarter)
+                
                 lastStatText.text = playerChosen + " missed a free throw"
             }
             print(team2[playerChosen]![quarter]!)
@@ -525,4 +565,14 @@ class ViewController: UIViewController, rostersRecieve{
         }
     }
     
+    //databse fucntions
+    func addplayerDB(playerName: String, currentGame: String, currentStat: String, currentTeam: String, currentQuarter: Int) {
+        if currentTeam == "team1" {
+            ref.child(currentGame).child("team1").child(playerName).child(String(currentQuarter)).child(currentStat).setValue(team1[playerChosen]![currentQuarter]![currentStat]!)
+        }
+        else {
+            ref.child(currentGame).child("team2").child(playerName).child(String(currentQuarter)).child(currentStat).setValue(team2[playerChosen]![currentQuarter]![currentStat]!)
+        }
+        
+    }
 }
