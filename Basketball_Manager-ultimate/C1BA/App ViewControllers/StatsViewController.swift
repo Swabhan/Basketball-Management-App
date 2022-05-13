@@ -25,6 +25,8 @@ class StatsViewController: UIViewController, UITableViewDataSource, UITableViewD
     var seconds = 00
     
     var quarter = 1
+    var amountOfQuarters = 4 //Makes stats available if overtime
+    
     @IBOutlet weak var quarterLabel: UILabel!
     
     //Stat Data
@@ -60,7 +62,11 @@ class StatsViewController: UIViewController, UITableViewDataSource, UITableViewD
         secondsLabel.text = String(seconds)
     }
         
-        quarterLabel.text = String(quarter)
+        if(amountOfQuarters == 4){
+            quarterLabel.text = String(quarter)
+        } else {
+            quarterLabel.text = "OT"
+        }
         
         //Table View set up
         playerStatsViewController.delegate = self
@@ -130,7 +136,8 @@ class StatsViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         
         for i in team1.keys{ //Adds up stats for all quarters and adds to team totals
-            for quarter in 1...4{
+            print(team1[i]!)
+            for quarter in 1...amountOfQuarters{
                 team1Total[i]!["Points"]! = team1Total[i]!["Points"]! + team1[i]![quarter]!["Points"]!
                 team1Total[i]!["Assists"]! = team1Total[i]!["Assists"]! + team1[i]![quarter]!["Assists"]!
                 team1Total[i]!["Rebounds"]! = team1Total[i]!["Rebounds"]! + team1[i]![quarter]!["Rebounds"]!
@@ -146,7 +153,7 @@ class StatsViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         
         for i in team2.keys{
-            for quarter in 1...4{
+            for quarter in 1...amountOfQuarters{
                 team2Total[i]!["Points"]! = team2Total[i]!["Points"]! + team2[i]![quarter]!["Points"]!
                 team2Total[i]!["Assists"]! = team2Total[i]!["Assists"]! + team2[i]![quarter]!["Assists"]!
                 team2Total[i]!["Rebounds"]! = team2Total[i]!["Rebounds"]! + team2[i]![quarter]!["Rebounds"]!
