@@ -8,6 +8,10 @@
 import UIKit
 import Firebase
 
+//To Play Sound
+import AVFoundation
+var player: AVAudioPlayer?
+
 class ViewController: UIViewController, rostersRecieve{
     
     //-Score Variables
@@ -26,17 +30,18 @@ class ViewController: UIViewController, rostersRecieve{
     @IBOutlet weak var minutesLabel: UILabel!
     @IBOutlet weak var secondsLabel: UILabel!
     
-    var startingMinutes = 1
+    var startingMinutes = 8
     
-    var minutes = 1
-    var seconds = 00
+    var minutes = 0
+    var seconds = 3
     
     var timesPressed = 0 //Keeps track of the amount of times timer has been paused/resumed
     
     //-Quarter Variables
     @IBOutlet weak var quarterLabel: UILabel!
     
-    var quarter = 1
+    var quarter = 4
+    var quarterAmount = 4
     
     //-Player Stats
     var roster1: [String] = [] //when player button gets pressed it chooses one of these players
@@ -82,6 +87,7 @@ class ViewController: UIViewController, rostersRecieve{
     
     override func viewDidLoad() {//Function runs when app first runs
         super.viewDidLoad()
+        
         allPlayers = roster1 + roster2
         
         //setting the initial text of the score to the value of score1 and score2 in the UI
@@ -101,7 +107,7 @@ class ViewController: UIViewController, rostersRecieve{
             team1[roster1[i]] = [:]
             team2[roster2[i]] = [:]
             
-            for x in 1...4{ //Used to create stats per quarter
+            for x in 1...quarterAmount{ //Used to create stats per quarter
                 team1[roster1[i]]![x] = ["Points":0, "Assists":0, "Rebounds":0, "Steals": 0, "Turnovers": 0, "FGM": 0, "FGA": 0, "3PM": 0, "3PA": 0, "FTM": 0, "FTA": 0]
                 
                 team2[roster2[i]]![x] = ["Points":0, "Assists":0, "Rebounds":0, "Steals": 0, "Turnovers": 0, "FGM": 0, "FGA": 0, "3PM": 0, "3PA": 0, "FTM": 0, "FTA": 0]
@@ -126,6 +132,8 @@ class ViewController: UIViewController, rostersRecieve{
     
     //-Time Buttons
     @IBAction func time(_ sender: Any) {
+        playSound(soundName: "sounds/whistle", extensionString: "mp3") //whistle sound
+        
         timesPressed = timesPressed + 1
         turnover = false
         miss = false
@@ -160,21 +168,42 @@ class ViewController: UIViewController, rostersRecieve{
             }
             
             if (minutes == 0 && seconds == 0){ //Resets time and starts new quarter
+                playSound(soundName: "sounds/buzzer", extensionString: "wav") //Buzzer Sound
                 minutes = startingMinutes
                 seconds = 0
                 
-                //Pausing timer and adding quarter
+                //Pausing timer
                 timer.invalidate()
-                self.timesPressed = self.timesPressed + 1
-                quarter = quarter + 1
+                
+                //Adding Quarter
+                if(quarter < 4){
+                    self.timesPressed = self.timesPressed + 1
+                    quarter = quarter + 1
+                    quarterLabel.text = String(quarter)
+                } else {
+                    if(score1 == score2){
+                        quarter = quarter + 1
+                        quarterAmount = quarterAmount + 1
+                        quarterLabel.text = "OT"
+                        
+                        for i in 0...roster1.count - 1{ //Adds quarter to overtime
+                            team1[roster1[i]]![quarter] = ["Points":0, "Assists":0, "Rebounds":0, "Steals": 0, "Turnovers": 0, "FGM": 0, "FGA": 0, "3PM": 0, "3PA": 0, "FTM": 0, "FTA": 0]
+                            
+                            team2[roster2[i]]![quarter] = ["Points":0, "Assists":0, "Rebounds":0, "Steals": 0, "Turnovers": 0, "FGM": 0, "FGA": 0, "3PM": 0, "3PA": 0, "FTM": 0, "FTA": 0]
+                            
+
+                        }
+                    
+                
+                    } else {
+                        quarterLabel.text = "Final"
+                    }
+                }
                 
                 //Resetting Labels
                 minutesLabel.text = String(minutes)
                 secondsLabel.text = "0" + String(seconds)
-            
-                quarterLabel.text = String(quarter)
-                
-                
+
             }
         }
 }
@@ -508,7 +537,7 @@ class ViewController: UIViewController, rostersRecieve{
         for i in roster1{
             if(team1[i] == nil){
                 team1[i] = [:]
-                for x in 1...4{ //Used to create stats per quarter
+                for x in 1...quarterAmount{ //Used to create stats per quarter
                     team1[i]![x] = ["Points":0, "Assists":0, "Rebounds":0, "Steals": 0, "Turnovers": 0, "FGM": 0, "FGA": 0, "3PM": 0, "3PA": 0, "FTM": 0, "FTA": 0]
                 }
             }
@@ -517,7 +546,7 @@ class ViewController: UIViewController, rostersRecieve{
         for i in roster2{
             if(team2[i] == nil){
                 team2[i] = [:]
-                for x in 1...4{ //Used to create stats per quarter
+                for x in 1...quarterAmount{ //Used to create stats per quarter
                     team2[i]![x] = ["Points":0, "Assists":0, "Rebounds":0, "Steals": 0, "Turnovers": 0, "FGM": 0, "FGA": 0, "3PM": 0, "3PA": 0, "FTM": 0, "FTA": 0]
                 }
             }
@@ -551,6 +580,10 @@ class ViewController: UIViewController, rostersRecieve{
             destinationVC.team2 = team2
             
             
+            destinationVC.amountOfQuarters = quarter
+            
+            
+            
         }
         
         if segue.identifier == "subs"{
@@ -574,5 +607,27 @@ class ViewController: UIViewController, rostersRecieve{
             ref.child(currentGame).child("team2").child(playerName).child(String(currentQuarter)).child(currentStat).setValue(team2[playerChosen]![currentQuarter]![currentStat]!)
         }
         
+    }
+    
+    func playSound(soundName: String, extensionString: String) {
+        guard let url = Bundle.main.url(forResource: soundName, withExtension: extensionString) else { return }
+
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+
+            /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
+            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+
+            /* iOS 10 and earlier require the following line:
+            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileTypeMPEGLayer3) */
+
+            guard let player = player else { return }
+
+            player.play()
+
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
 }

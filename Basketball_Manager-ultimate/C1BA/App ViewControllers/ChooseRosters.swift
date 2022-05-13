@@ -14,7 +14,7 @@ protocol rostersRecieve {
 
 class ChooseRosters: UIViewController, UITableViewDataSource, UITableViewDelegate {
     //List of all players
-    var players:[String] = ["Swabhan", "Prabhav", "Vince", "Anthony", "Zeke", "Aryan", "Sid", "Ian", "Chris", "Sumant", "Harshil"]
+    var players:[String] = ["Swabhan", "Prabhav", "Vince", "Anthony", "Zeke", "Aryan", "Sid", "Ian", "Chris", "Sumant", "Harshil", "Aamir"]
     
     //List of team's roster
     var team1:[String] = []
