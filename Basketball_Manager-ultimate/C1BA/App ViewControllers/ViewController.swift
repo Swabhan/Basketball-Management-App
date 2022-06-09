@@ -69,11 +69,11 @@ class ViewController: UIViewController, rostersRecieve{
 
     @IBOutlet weak var lastStatText: UILabel!
     
-    @IBOutlet weak var turnoverButton: UIButton!
+    
 
     @IBOutlet weak var reminderText: UILabel!
     
-    //player buttons variable
+    //player buttons variables
     @IBOutlet weak var playerButton1: UIButton!
     @IBOutlet weak var playerButton2: UIButton!
     @IBOutlet weak var playerButton3: UIButton!
@@ -85,11 +85,54 @@ class ViewController: UIViewController, rostersRecieve{
     @IBOutlet weak var playerButton9: UIButton!
     @IBOutlet weak var playerButton10: UIButton!
     
+    //action buttons variables
+    @IBOutlet weak var threeButton: UIButton!
+    @IBOutlet weak var twoButton: UIButton!
+    @IBOutlet weak var oneButton: UIButton!
+    @IBOutlet weak var missButton: UIButton!
+    @IBOutlet weak var turnoverButton: UIButton!
+    @IBOutlet weak var subButton: UIButton!
+    
     override func viewDidLoad() {//Function runs when app first runs
         super.viewDidLoad()
         
         allPlayers = roster1 + roster2
         
+        //setting button shapes (players)
+        playerButton1.layer.cornerRadius = 15
+        playerButton1.layer.masksToBounds = true
+        playerButton2.layer.cornerRadius = 15
+        playerButton2.layer.masksToBounds = true
+        playerButton3.layer.cornerRadius = 15
+        playerButton3.layer.masksToBounds = true
+        playerButton4.layer.cornerRadius = 15
+        playerButton4.layer.masksToBounds = true
+        playerButton5.layer.cornerRadius = 15
+        playerButton5.layer.masksToBounds = true
+        playerButton6.layer.cornerRadius = 15
+        playerButton6.layer.masksToBounds = true
+        playerButton7.layer.cornerRadius = 15
+        playerButton7.layer.masksToBounds = true
+        playerButton8.layer.cornerRadius = 15
+        playerButton8.layer.masksToBounds = true
+        playerButton9.layer.cornerRadius = 15
+        playerButton9.layer.masksToBounds = true
+        playerButton10.layer.cornerRadius = 15
+        playerButton10.layer.masksToBounds = true
+        
+        //setting button shapes (actions)
+        threeButton.layer.cornerRadius = threeButton.frame.width / 2
+        threeButton.layer.masksToBounds = true
+        twoButton.layer.cornerRadius = twoButton.frame.width / 2
+        twoButton.layer.masksToBounds = true
+        oneButton.layer.cornerRadius = oneButton.frame.width / 2
+        oneButton.layer.masksToBounds = true
+        missButton.layer.cornerRadius = missButton.frame.width / 2
+        missButton.layer.masksToBounds = true
+        turnoverButton.layer.cornerRadius = turnoverButton.frame.width / 2
+        turnoverButton.layer.masksToBounds = true
+        subButton.layer.cornerRadius = 15
+        subButton.layer.masksToBounds = true
         //setting the initial text of the score to the value of score1 and score2 in the UI
         score1Text.setTitle(String(score1), for: .normal)
         score2Text.setTitle(String(score2), for: .normal)
@@ -334,7 +377,7 @@ class ViewController: UIViewController, rostersRecieve{
     @IBAction func addAssist(_ sender: Any) {
         addAssistReboundStealTurnover(Stat : "Assists")
         addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "Assists", currentTeam: teamChosen, currentQuarter: quarter)
-        lastStatText.text = playerChosen + " got a assist!"
+        lastStatText.text = playerChosen + " got an assist!"
     }
     
     @IBAction func addTurnover(_ sender: Any) {
@@ -342,7 +385,7 @@ class ViewController: UIViewController, rostersRecieve{
         addplayerDB(playerName: playerChosen, currentGame: "game1", currentStat: "Turnover", currentTeam: teamChosen, currentQuarter: quarter)
         turnover = true
         lastStatText.text = playerChosen + " got a turnover"
-        reminderText.text = "Who got a steal?"
+        reminderText.text = "Who got the steal?"
     }
     
     @IBAction func missButton(_ sender: Any) {
