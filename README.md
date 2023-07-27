@@ -1,11 +1,30 @@
 # Basketball_Manager
 
-Intuitive app with a multitude of features for basketball players.
+<!DOCTYPE html>
+<html lang="en">
 
-Game Clock/Scoreboard: Fully functioning Game Clock + Scoreboard (with sound effects), with HS, NCAA, and NBA time format. Add/Subtract points. Includes 24 second shot clock feature. Able to keep track of stats (PTS, ASTS, RBS, FG%, TO, etc.), while simultaneously updating the score.
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+</head>
 
-Stat Book Feature: Users can see their averages in PTS, ASTS, RBS, FG%, TO, etc. Able to convert stats to NBA pace and return a short list of NBA players who had similar stats to the user.
+<body>
 
-Team Builder: Able to construct fair and/or randomized teams of players within the league. Fair teams refer to an equal distibtion of players with higher and lower stats on the same team.
+  <h2>Game Clock/Scoreboard</h2>
+  <p>The app features a fully functioning Game Clock, Scoreboard with sound effects, and users can add or subtract points. The app also allows for
+    real-time stat tracking (PTS, ASTS, RBS, FG%, TO, etc.) while actively updating the score.</p>
 
-Season Awards: MVP, DPOY, MIP, OPOY etc awards will be determined by stats + wins and be released to all the users at the end of the season. Will also be maintaned in a database along with the season stats so all players can see each others numbers.
+  <h2>Stat Book Feature</h2>
+  <p>Users can access their averages in PTS, ASTS, RBS, FG%, TO, etc., making it easy to track their performance.</p>
+
+  <h2>Team Builder</h2>
+  <p>The Team Builder feature allows users to construct teams of players within the league enhancing the overall
+    competitiveness of the games.</p>
+
+  <h2>Season Awards</h2>
+  <p>At the end of each season, the app determines awards such as MVP, DPOY, MIP, OPOY, etc., based on players' stats
+    and wins. The award results are released to all users, and a database maintains the season stats, allowing all
+    players to see each other's numbers and achievements.</p>
+
+ 
