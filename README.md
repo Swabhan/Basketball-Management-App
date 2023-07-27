@@ -27,4 +27,12 @@
     and wins. The award results are released to all users, and a database maintains the season stats, allowing all
     players to see each other's numbers and achievements.</p>
 
+ <h2>Screenshots</h2>
+ <div style="display: flex; margin: 100%">
+  <img src="https://swabhan.github.io/Scoreboard.jpeg" alt="Scoreboard" width="300"  style="border-radius: 10px; object-fit: cover;">
+  <img src="https://swabhan.github.io/stats.jpeg" alt="Stats" width="300" style="border-radius: 10px; object-fit: cover;">
+</div>
+
+
+  
  
