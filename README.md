@@ -30,9 +30,11 @@
  <h2>Screenshots</h2>
  <p>Screenshots showcasing the Scoreboard, Stat Tracking Mechanisms, Game Clock, and Stat View</p>
  <div style="display: flex; margin: 100%">
-  <img src="https://swabhan.github.io/Scoreboard.jpeg" alt="Scoreboard" width="200"  style="border-radius: 10px; object-fit: cover;">
-  <img src="https://swabhan.github.io/stats.jpeg" alt="Stats" width="193" style="border-radius: 10px; object-fit: cover;">
-</div>
+  <img src="https://github.com/Swabhan/Basketball-Management-App/assets/46286853/4a19f909-70f3-4023-99c2-4787580ba11c" alt="Scoreboard" width="200"  style="border-radius: 10px; object-fit: cover;">
+  <img src="https://github.com/Swabhan/Basketball-Management-App/assets/46286853/dccde021-1e4e-44c4-9374-a494e0c7cb95" alt="Stats" width="193" style="border-radius: 10px; object-fit: cover;">
+
+
+
 
 
   
